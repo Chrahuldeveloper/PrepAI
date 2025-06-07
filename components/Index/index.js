@@ -13,6 +13,7 @@ export default function Index() {
   const [jobDescription, setJobDescription] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [questions, setQuestions] = useState([]);
+  const [hostname,sethostname] = useState("")
   const [jobapplications, setjobapplications] = useState([]);
   const [isloading, setisloading] = useState(false);
   const getInterviewQuestions = async (data, tittle) => {
@@ -70,6 +71,7 @@ export default function Index() {
         if (data.scrapedData) {
           setJobDescription(data.scrapedData.desc);
           setJobTitle(data.scrapedData.title)
+          sethostname(data.scrapedData.hostname)
           getInterviewQuestions(data.scrapedData.desc, data.scrapedData.tittle);
         }
       });
@@ -101,6 +103,7 @@ export default function Index() {
     if (typeof window !== "undefined" && chrome?.storage) {
       const newJob = {
         title: jobTitle,
+        hostname : hostname,
         timestamp: new Date().toISOString(),
       };
 
@@ -190,9 +193,9 @@ export default function Index() {
             </li>
           </ul>
         </div>
-        {isloading && section === "Questions" || "Job description" ? (
+        {isloading && section !== "applications" && (
           <LuLoaderCircle className="animate-loader" size={30} color="gray" />
-        ) : null}
+        )}
         {section === "Job description" ? (
           <div>
             <textarea
@@ -212,15 +215,27 @@ export default function Index() {
               jobapplications.map((job, id) => (
                 <div className="jd" key={id}>
                   <div>
-                    <Image
-                      src="https://internshala.com//static/images/internshala_og_image.jpg"
-                      width={100}
-                      height={50}
-                      blurDataURL="https://internshala.com//static/images/internshala_og_image.jpg"
-                      priority
-                      placeholder="blur"
-                      alt="Logo"
-                    />
+                    {
+                      job.hostname === "internshala.com" ?
+                        <Image
+                          src="https://internshala.com//static/images/internshala_og_image.jpg"
+                          width={100}
+                          height={50}
+                          blurDataURL="https://internshala.com//static/images/internshala_og_image.jpg"
+                          priority
+                          placeholder="blur"
+                          alt="Logo"
+                        />
+                        : <Image
+                          src="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
+                          width={100}
+                          height={50}
+                          blurDataURL="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png "
+                          priority
+                          placeholder="blur"
+                          alt="Logo"
+                        />
+                    }
                   </div>
                   <div className="jd-content">
                     <h1>{job.title}</h1>
