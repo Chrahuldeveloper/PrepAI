@@ -22,11 +22,6 @@ function extractData(titleElem, descElem) {
   const hostname = new URL(url).hostname;
 
   const jobData = {
-    title: jobTitle,
-    desc: jobDesc
-  };
-
-  const jobApplication = {
     hostname,
     link: url,
     title: jobTitle,
@@ -34,17 +29,18 @@ function extractData(titleElem, descElem) {
     timeStamp: new Date().toISOString()
   };
 
+
   chrome.storage.local.set({ scrapedData: jobData }, () => {
     console.log("Job details saved:", jobData);
   });
 
-//   chrome.storage.local.get(["jobApplications"], (res) => {
-//     const existing = res.jobApplications || [];
-//     const updated = [...existing, jobApplication];
-//     chrome.storage.local.set({ jobApplications: updated }, () => {
-//       console.log("Job application appended:", jobApplication);
-//     });
-//   });
+  // chrome.storage.local.get(["jobApplications"], (res) => {
+  //   const existing = res.jobApplications || [];
+  //   const updated = [...existing, jobApplication];
+  //   chrome.storage.local.set({ jobApplications: updated }, () => {
+  //     console.log("Job application appended:", jobApplication);
+  //   });
+  // });
 }
 
 function scrapeInternshalaJob() {
