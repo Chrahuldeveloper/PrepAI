@@ -7,74 +7,20 @@ import Image from "next/image";
 
 export default function Index() {
 
-  const jobs = [
-    {
-      title: "Resize profile picture",
-      desc: "Resize and compress a user’s profile picture to 200x200px.",
-      hostname: "fiverr.com"
-    },
-    {
-      title: "Fix broken anchor tag",
-      desc: "Correct an HTML link that isn’t working on a landing page.Correct an HTML link that isn’t working on a landing pageCorrect an HTML link that isn’t working on a landing page",
-      hostname: "upwork.com"
-    },
-    {
-      title: "Transcribe 2-minute audio",
-      desc: "Convert a short voice message into text format.",
-      hostname: "rev.com"
-    },
-    {
-      title: "Remove background from image",
-      desc: "Edit an image to remove its background and export as PNG.",
-      hostname: "canva.com"
-    },
-    {
-      title: "Summarize blog post",
-      desc: "Read a 500-word blog and write a 1-sentence summary.",
-      hostname: "copy.ai"
-    },
-    {
-      title: "Convert CSV to JSON",
-      desc: "Write a script to convert CSV data to a JSON array.",
-      hostname: "github.com"
-    },
-    {
-      title: "Test form submission",
-      desc: "Submit a contact form and verify the thank-you message appears.",
-      hostname: "test.io"
-    },
-    {
-      title: "Find broken links",
-      desc: "Run a scan to identify dead links on a homepage.",
-      hostname: "ahrefs.com"
-    },
-    {
-      title: "Design favicon",
-      desc: "Create a 16x16 and 32x32 favicon for a website.",
-      hostname: "favicon.io"
-    },
-    {
-      title: "Extract text from screenshot",
-      desc: "Use OCR to extract text from an uploaded image.",
-      hostname: "onlineocr.net"
-    }
-  ];
-
-
-
   const [section, setsection] = useState("Job description");
 
   const [imageURL, setimageURL] = useState();
-
   const [jobDescription, setJobDescription] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const [questions, setQuestions] = useState([]);
-  const [jobapplications, setjobapplications] = useState(jobs);
+  const [jobapplications, setjobapplications] = useState([]);
   const [isloading, setisloading] = useState(false);
   const getInterviewQuestions = async (data, tittle) => {
     try {
       setisloading(true);
       let headersList = {
         Accept: "*/*",
+
         "Content-Type": "application/json",
       };
 
@@ -117,11 +63,13 @@ export default function Index() {
   };
 
   console.log(questions);
+
   useEffect(() => {
     if (typeof window !== "undefined" && chrome?.storage) {
       chrome.storage.local.get("scrapedData", (data) => {
         if (data.scrapedData) {
           setJobDescription(data.scrapedData.desc);
+          setJobTitle(data.scrapedData.title)
           getInterviewQuestions(data.scrapedData.desc, data.scrapedData.tittle);
         }
       });
@@ -130,27 +78,47 @@ export default function Index() {
 
 
   useEffect(() => {
-    let storedURL = localStorage.getItem("url");
+    if (typeof window !== "undefined" && chrome?.storage) {
+      chrome.storage.local.get("jobApplications", (data) => {
+        const storedJobs = data.jobApplications || [];
+        setjobapplications(storedJobs);
+      });
+    }
+  }, []);
 
+
+  useEffect(() => {
+    let storedURL = localStorage.getItem("url");
     if (!storedURL) {
       storedURL =
         "https://firebasestorage.googleapis.com/v0/b/app-2-d919d.appspot.com/o/10567507-removebg-preview.png?alt=media&token=acf9efc4-3a27-4d50-ace1-2664486863ef";
       localStorage.setItem("url", storedURL);
     }
-
     setimageURL(storedURL);
   }, []);
 
-
   const handleSaveJob = () => {
-    if (typeof window != "undefined" && chrome?.storage) {
+    if (typeof window !== "undefined" && chrome?.storage) {
+      const newJob = {
+        title: jobTitle,
+        timestamp: new Date().toISOString(),
+      };
+
       chrome.storage.local.get(["jobApplications"], (res) => {
-        console.log("Saved job applications:", res.jobApplications || []);
-      })
+        const existingJobs = res.jobApplications || [];
+        const updatedJobs = [...existingJobs, newJob];
+
+        chrome.storage.local.set({ jobApplications: updatedJobs }, () => {
+          console.log("Job saved successfully");
+          setjobapplications(updatedJobs);
+        });
+      });
     } else {
-      console.log("stroage not avaliable")
+      console.log("Storage not available");
     }
-  }
+  };
+
+  console.log(jobapplications)
 
   return (
     <>
@@ -222,7 +190,7 @@ export default function Index() {
             </li>
           </ul>
         </div>
-        {isloading ? (
+        {isloading && section === "Questions" || "Job description" ? (
           <LuLoaderCircle className="animate-loader" size={30} color="gray" />
         ) : null}
         {section === "Job description" ? (
@@ -238,31 +206,29 @@ export default function Index() {
           </div>
         ) : section === "applications" ? (
           <div className="applications">
-            {
-              jobapplications.map((_, id) => {
-                return (
-                  <div className="jd">
-                    <div>
-                      <Image
-                        src={
-                          "https://internshala.com//static/images/internshala_og_image.jpg"
-                        }
-                        width={100}
-                        height={50}
-                        blurDataURL="https://internshala.com//static/images/internshala_og_image.jpg"
-                        priority
-                        placeholder="blur"
-                        alt="Picture of the author"
-                      />
-                    </div>
-                    <div className="jd-content">
-                      <h1>{_.title}</h1>
-                      <p>{_.desc}</p>
-                    </div>
+            {jobapplications.length === 0 ? (
+              <p>No saved applications yet.</p>
+            ) : (
+              jobapplications.map((job, id) => (
+                <div className="jd" key={id}>
+                  <div>
+                    <Image
+                      src="https://internshala.com//static/images/internshala_og_image.jpg"
+                      width={100}
+                      height={50}
+                      blurDataURL="https://internshala.com//static/images/internshala_og_image.jpg"
+                      priority
+                      placeholder="blur"
+                      alt="Logo"
+                    />
                   </div>
-                )
-              })
-            }
+                  <div className="jd-content">
+                    <h1>{job.title}</h1>
+                  </div>
+                </div>
+              ))
+            )}
+
           </div>
         ) : (
           <div className="questions">

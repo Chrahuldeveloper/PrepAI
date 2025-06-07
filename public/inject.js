@@ -29,18 +29,10 @@ function extractData(titleElem, descElem) {
     timeStamp: new Date().toISOString()
   };
 
-
   chrome.storage.local.set({ scrapedData: jobData }, () => {
     console.log("Job details saved:", jobData);
   });
 
-  // chrome.storage.local.get(["jobApplications"], (res) => {
-  //   const existing = res.jobApplications || [];
-  //   const updated = [...existing, jobApplication];
-  //   chrome.storage.local.set({ jobApplications: updated }, () => {
-  //     console.log("Job application appended:", jobApplication);
-  //   });
-  // });
 }
 
 function scrapeInternshalaJob() {
