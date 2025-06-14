@@ -113,7 +113,7 @@ export default function Index() {
   const handleDelete = (deletejob) => {
     chrome.storage.local.get(["jobApplications"], (data) => {
       const existingJobs = data.jobApplications || [];
-      const updatedJobs = existingJobs.filter((job) => job.title !== deletejob.title)
+      const updatedJobs = existingJobs.filter((job) => job.timeStamp !== deletejob.timeStamp)
       chrome.storage.local.set({ jobApplications: updatedJobs }, () => {
         console.log("Job deleted successfully");
         setjobapplications(updatedJobs);
@@ -205,7 +205,7 @@ export default function Index() {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "space-between", 
+                        justifyContent: "space-between",
                         gap: "15px",
                       }}
                     >
