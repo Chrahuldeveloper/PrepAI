@@ -226,12 +226,8 @@ export default function Index() {
                         />
                       )}
                       <div>
-                        <h1 style={{
-                          color: "white"
-                        }}>{job.title}</h1>
-                        <p style={{
-                          color: "white"
-                        }}>{job.hostname}</p>
+                        <h1>{job.title}</h1>
+                        <p >{job.hostname}</p>
                       </div>
                     </div>
                   </div>
