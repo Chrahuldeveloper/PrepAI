@@ -63,7 +63,6 @@ export default function Index() {
     saveAs(blobdata, "questions.txt");
   };
 
-  console.log(questions);
 
   useEffect(() => {
     if (typeof window !== "undefined" && chrome?.storage) {
@@ -121,44 +120,19 @@ export default function Index() {
     }
   };
 
-  console.log(jobapplications)
 
   return (
     <>
       <div>
         <div className="header-top">
           <div className="top-bar">
-            <AiTwotoneThunderbolt size={25} />
-            <h1 className="top-bar-heading">InterviewPrep</h1>
+            <div class="logo-box">IP</div>
+            <h1 className="top-bar-heading">InterviewPrep.ai</h1>
           </div>
-
           <div>
             <button onClick={handleSaveJob} className="save-btn">
               Save
             </button>
-          </div>
-
-        </div>
-        <div className="banner">
-          <div>
-            <Image
-              src={
-                imageURL ||
-                "https://firebasestorage.googleapis.com/v0/b/app-2-d919d.appspot.com/o/10567507-removebg-preview.png?alt=media&token=acf9efc4-3a27-4d50-ace1-2664486863ef"
-              }
-              width={250}
-              height={250}
-              blurDataURL="https://firebasestorage.googleapis.com/v0/b/app-2-d919d.appspot.com/o/10567507-removebg-preview.png?alt=media&token=acf9efc4-3a27-4d50-ace1-2664486863ef"
-              priority
-              placeholder="blur"
-              alt="Picture of the author"
-            />
-          </div>
-          <div>
-            <h1 className="banner-heading">Interview Questions</h1>
-            <p className="banner-para">
-              Get AI-generated interview questions tailored to your role{" "}
-            </p>
           </div>
         </div>
 
@@ -193,7 +167,7 @@ export default function Index() {
             </li>
           </ul>
         </div>
-        {isloading && section !== "applications" && (
+        {isloading && section !== "applications" && (section || "Job description")(
           <LuLoaderCircle className="animate-loader" size={30} color="gray" />
         )}
         {section === "Job description" ? (
@@ -210,37 +184,43 @@ export default function Index() {
         ) : section === "applications" ? (
           <div className="applications">
             {jobapplications.length === 0 ? (
-              <p>No saved applications yet.</p>
+              <p className="noq" style={{
+                textAlign: "center"
+              }}>No saved applications yet.</p>
             ) : (
               jobapplications.map((job, id) => (
-                <div className="jd" key={id}>
-                  <div>
+                <div className="q-box" key={id}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     {
-                      job.hostname === "internshala.com" ?
+                      job.hostname === "internshala.com" ? (
                         <Image
                           src="https://internshala.com//static/images/internshala_og_image.jpg"
-                          width={100}
-                          height={50}
+                          width={80}
+                          height={40}
                           blurDataURL="https://internshala.com//static/images/internshala_og_image.jpg"
                           priority
                           placeholder="blur"
                           alt="Logo"
                         />
-                        : <Image
+                      ) : (
+                        <Image
                           src="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
-                          width={100}
-                          height={50}
-                          blurDataURL="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png "
+                          width={80}
+                          height={40}
+                          blurDataURL="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
                           priority
                           placeholder="blur"
                           alt="Logo"
                         />
+                      )
                     }
-                  </div>
-                  <div className="jd-content">
-                    <h1>{job.title}</h1>
+                    <div>
+                      <h1 className="q-heading">{job.title}</h1>
+                      <p className="q-para">{job.hostname}</p>
+                    </div>
                   </div>
                 </div>
+
               ))
             )}
           </div>
