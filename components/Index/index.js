@@ -193,7 +193,7 @@ export default function Index() {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                alignContent: "center"
+                alignItems: "center"
               }}>
                 {jobapplications.map((job, id) => (
                   <div className="q-box" key={id}>
