@@ -31,14 +31,14 @@ body {
   margin-top: 12px;
   font-size: 20px;
   font-weight: 600;
-  color: #111827; 
+  color: #111827;
   text-align: center;
 }
 
 .job-role {
   margin-top: 8px;
-  background-color: #f3f4f6; 
-  color: #4b5563; 
+  background-color: #f3f4f6;
+  color: #4b5563;
   padding: 6px 16px;
   font-size: 14px;
   border-radius: 8px;
@@ -207,7 +207,17 @@ body {
   color: #71717a;
 }
 
-.btn-export,
+.btn-export {
+  background: linear-gradient(to right, #6366f1, #a855f7);
+  color: white;
+  padding: 8px 25px;
+  font-weight: 400;
+  font-size: 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
 .generate-btn {
   width: auto;
   background-color: black;
