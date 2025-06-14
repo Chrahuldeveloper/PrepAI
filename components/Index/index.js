@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { LuLoaderCircle } from "react-icons/lu";
 import { saveAs } from "file-saver";
 import Image from "next/image";
+import { FiTrash } from "react-icons/fi";
+
 
 export default function Index() {
 
@@ -85,16 +87,6 @@ export default function Index() {
   }, []);
 
 
-  // useEffect(() => {
-  //   let storedURL = localStorage.getItem("url");
-  //   if (!storedURL) {
-  //     storedURL =
-  //       "https://firebasestorage.googleapis.com/v0/b/app-2-d919d.appspot.com/o/10567507-removebg-preview.png?alt=media&token=acf9efc4-3a27-4d50-ace1-2664486863ef";
-  //     localStorage.setItem("url", storedURL);
-  //   }
-  //   setimageURL(storedURL);
-  // }, []);
-
   const handleSaveJob = () => {
     if (typeof window !== "undefined" && chrome?.storage) {
       const newJob = {
@@ -116,6 +108,18 @@ export default function Index() {
       console.log("Storage not available");
     }
   };
+
+
+  const handleDelete = (deletejob) => {
+    chrome.storage.local.get(["jobApplications"], (data) => {
+      const existingJobs = data.jobApplications || [];
+      const updatedJobs = existingJobs.filter((job) => job.title !== deletejob.title)
+      chrome.storage.local.set({ jobApplications: updatedJobs }, () => {
+        console.log("Job deleted successfully");
+        setjobapplications(updatedJobs);
+      });
+    })
+  }
 
 
   return (
@@ -201,37 +205,49 @@ export default function Index() {
                       style={{
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "space-between", 
                         gap: "15px",
                       }}
                     >
-                      {job.hostname === "internshala.com" ? (
-                        <Image
-                          src="https://internshala.com//static/images/internshala_og_image.jpg"
-                          width={80}
-                          height={40}
-                          blurDataURL="https://internshala.com//static/images/internshala_og_image.jpg"
-                          priority
-                          placeholder="blur"
-                          alt="Logo"
-                        />
-                      ) : (
-                        <Image
-                          src="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
-                          width={80}
-                          height={40}
-                          blurDataURL="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
-                          priority
-                          placeholder="blur"
-                          alt="Logo"
-                        />
-                      )}
-                      <div>
-                        <h1>{job.title}</h1>
-                        <p >{job.hostname}</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+                        {job.hostname === "internshala.com" ? (
+                          <Image
+                            src="https://internshala.com//static/images/internshala_og_image.jpg"
+                            width={80}
+                            height={40}
+                            blurDataURL="https://internshala.com//static/images/internshala_og_image.jpg"
+                            priority
+                            placeholder="blur"
+                            alt="Logo"
+                          />
+                        ) : (
+                          <Image
+                            src="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
+                            width={80}
+                            height={40}
+                            blurDataURL="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
+                            priority
+                            placeholder="blur"
+                            alt="Logo"
+                          />
+                        )}
+                        <div>
+                          <h1 style={{ fontSize: "18px", fontWeight: "500" }}>{job.title}</h1>
+                          <p>{job.hostname}</p>
+                        </div>
                       </div>
+                      <button
+                        onClick={() => {
+                          handleDelete(job)
+                        }}
+                        style={{ background: "transparent", border: "none", cursor: "pointer" }}
+                      >
+                        <FiTrash size={20} color="#ff4d4f" />
+                      </button>
                     </div>
                   </div>
                 ))}
+
               </div>
             )}
           </div>
