@@ -13,7 +13,7 @@ export default function Index() {
   const [jobDescription, setJobDescription] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [questions, setQuestions] = useState([]);
-  const [hostname,sethostname] = useState("")
+  const [hostname, sethostname] = useState("")
   const [jobapplications, setjobapplications] = useState([]);
   const [isloading, setisloading] = useState(false);
   const getInterviewQuestions = async (data, tittle) => {
@@ -103,7 +103,7 @@ export default function Index() {
     if (typeof window !== "undefined" && chrome?.storage) {
       const newJob = {
         title: jobTitle,
-        hostname : hostname,
+        hostname: hostname,
         timestamp: new Date().toISOString(),
       };
 
@@ -243,7 +243,6 @@ export default function Index() {
                 </div>
               ))
             )}
-
           </div>
         ) : (
           <div className="questions">
