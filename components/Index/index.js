@@ -133,7 +133,7 @@ export default function Index() {
           </div>
         </div>
 
-        <div className="">
+        <div>
           <ul className="list-items">
             <li
               className={`${section === "Job description" ? "item-highlight" : "item"
@@ -142,7 +142,7 @@ export default function Index() {
                 setsection("Job description");
               }}
             >
-              Job Descption
+              Job Description
             </li>
             <li
               className={`${section === "Questions" ? "item-highlight" : "item"
@@ -164,10 +164,12 @@ export default function Index() {
             </li>
           </ul>
         </div>
-        {isloading && section !== "applications" && (section || "Job description")(
+
+        {isloading && section !== "applications" && (
           <LuLoaderCircle className="animate-loader" size={30} color="gray" />
         )}
-        {section === "Job description" ? (
+
+        {section === "Job description" && (
           <div>
             <textarea
               value={jobDescription}
@@ -178,18 +180,31 @@ export default function Index() {
               rows={8}
             />
           </div>
-        ) : section === "applications" ? (
+        )}
+
+        {section === "applications" && (
           <div className="applications">
             {jobapplications.length === 0 ? (
-              <p className="noq" style={{
-                textAlign: "center"
-              }}>No saved applications yet.</p>
+              <p className="noq" style={{ textAlign: "center" }}>
+                No saved applications yet.
+              </p>
             ) : (
-              jobapplications.map((job, id) => (
-                <div className="q-box" key={id}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    {
-                      job.hostname === "internshala.com" ? (
+              <div style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignContent: "center"
+              }}>
+                {jobapplications.map((job, id) => (
+                  <div className="q-box" key={id}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                      }}
+                    >
+                      {job.hostname === "internshala.com" ? (
                         <Image
                           src="https://internshala.com//static/images/internshala_og_image.jpg"
                           width={80}
@@ -209,19 +224,24 @@ export default function Index() {
                           placeholder="blur"
                           alt="Logo"
                         />
-                      )
-                    }
-                    <div>
-                      <h1 className="q-heading">{job.title}</h1>
-                      <p className="q-para">{job.hostname}</p>
+                      )}
+                      <div>
+                        <h1 style={{
+                          color: "white"
+                        }}>{job.title}</h1>
+                        <p style={{
+                          color: "white"
+                        }}>{job.hostname}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-              ))
+                ))}
+              </div>
             )}
           </div>
-        ) : (
+        )}
+
+        {section === "Questions" && (
           <div className="questions">
             {questions.length > 0 ? (
               questions.map((i, id) => (
@@ -241,8 +261,7 @@ export default function Index() {
             )}
           </div>
         )}
-
       </div>
     </>
-  );
+  )
 }
