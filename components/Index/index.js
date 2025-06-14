@@ -2,14 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { LuLoaderCircle } from "react-icons/lu";
 import { saveAs } from "file-saver";
-import { AiTwotoneThunderbolt } from "react-icons/ai";
 import Image from "next/image";
 
 export default function Index() {
 
   const [section, setsection] = useState("Job description");
 
-  const [imageURL, setimageURL] = useState();
   const [jobDescription, setJobDescription] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [questions, setQuestions] = useState([]);
@@ -21,7 +19,6 @@ export default function Index() {
       setisloading(true);
       let headersList = {
         Accept: "*/*",
-
         "Content-Type": "application/json",
       };
 
@@ -88,15 +85,15 @@ export default function Index() {
   }, []);
 
 
-  useEffect(() => {
-    let storedURL = localStorage.getItem("url");
-    if (!storedURL) {
-      storedURL =
-        "https://firebasestorage.googleapis.com/v0/b/app-2-d919d.appspot.com/o/10567507-removebg-preview.png?alt=media&token=acf9efc4-3a27-4d50-ace1-2664486863ef";
-      localStorage.setItem("url", storedURL);
-    }
-    setimageURL(storedURL);
-  }, []);
+  // useEffect(() => {
+  //   let storedURL = localStorage.getItem("url");
+  //   if (!storedURL) {
+  //     storedURL =
+  //       "https://firebasestorage.googleapis.com/v0/b/app-2-d919d.appspot.com/o/10567507-removebg-preview.png?alt=media&token=acf9efc4-3a27-4d50-ace1-2664486863ef";
+  //     localStorage.setItem("url", storedURL);
+  //   }
+  //   setimageURL(storedURL);
+  // }, []);
 
   const handleSaveJob = () => {
     if (typeof window !== "undefined" && chrome?.storage) {
@@ -126,7 +123,7 @@ export default function Index() {
       <div>
         <div className="header-top">
           <div className="top-bar">
-            <div class="logo-box">IP</div>
+            <div className="logo-box">IP</div>
             <h1 className="top-bar-heading">InterviewPrep.ai</h1>
           </div>
           <div>
