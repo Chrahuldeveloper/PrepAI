@@ -183,24 +183,52 @@ export default function Index() {
               No saved applications yet.
             </p>
           ) : (
-            <div className="centered-column">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               {jobapplications.map((job, id) => (
                 <div className="q-box" key={id}>
-                  <div className="application-item">
-                    <div className="application-details">
-                      <Image
-                        src={
-                          job.hostname === "internshala.com"
-                            ? "https://internshala.com//static/images/internshala_og_image.jpg"
-                            : "https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
-                        }
-                        width={80}
-                        height={40}
-                        alt="Logo"
-                        blurDataURL="data:image/png;base64,abc"
-                        placeholder="blur"
-                        priority
-                      />
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "15px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                      }}
+                    >
+                      {job.hostname === "internshala.com" ? (
+                        <Image
+                          src="https://internshala.com//static/images/internshala_og_image.jpg"
+                          width={80}
+                          height={40}
+                          blurDataURL="https://internshala.com//static/images/internshala_og_image.jpg"
+                          priority
+                          placeholder="blur"
+                          alt="Logo"
+                        />
+                      ) : (
+                        <Image
+                          src="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
+                          width={80}
+                          height={40}
+                          blurDataURL="https://images.ctfassets.net/e8i6c2002cqg/336jHkunz7PxBObVvPuQ5A/96aee60cdf3eee9f09381682daf56a44/auXY68iA.png"
+                          priority
+                          placeholder="blur"
+                          alt="Logo"
+                        />
+                      )}
                       <div>
                         <h1 style={{ fontSize: "18px", fontWeight: "500" }}>
                           {job.title}
@@ -209,8 +237,14 @@ export default function Index() {
                       </div>
                     </div>
                     <button
-                      onClick={() => handleDelete(job)}
-                      className="delete-btn"
+                      onClick={() => {
+                        handleDelete(job);
+                      }}
+                      style={{
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
                     >
                       <FiTrash size={20} color="#ff4d4f" />
                     </button>
