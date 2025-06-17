@@ -47,7 +47,9 @@ function scrapeNaukri() {
 }
 
 chrome.storage.local.get("scrapedData", (data) => {
-  if (!data.scrapedData) {
+  const currentHostName = window.location.hostname;
+
+  if (!data.scrapedData || data.scrapedData.hostname !== currentHostName) {
     console.log("No scraped data found, starting scraping...");
     scrapeInterval(scrapeInternshalaJob);
     scrapeInterval(scrapeNaukri);
