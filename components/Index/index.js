@@ -17,7 +17,7 @@ export default function Index() {
     hostname: "",
   });
 
-  const getInterviewQuestions = async (data, tittle) => {
+  const getInterviewQuestions = async (data, title) => {
     try {
       setisloading(true);
 
@@ -29,20 +29,32 @@ export default function Index() {
             Accept: "*/*",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ message: data, tittle }),
+          body: JSON.stringify({ message: data, tittle: title }),
         }
       );
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
       const resdata = await res.json();
-      console.log("API Response:", resdata);
+      const questions = resdata.questions || [];
 
       setsection("Questions");
       setjobData((prev) => ({
         ...prev,
-        questions: resdata.questions || [],
+        questions,
       }));
+
+      chrome.storage.local.get("scrapedData", (data) => {
+        if (data.scrapedData) {
+          const updatedData = {
+            ...data.scrapedData,
+            questions,
+          };
+          chrome.storage.local.set({ scrapedData: updatedData }, () => {
+            console.log("Questions added to scrapedData");
+          });
+        }
+      });
     } catch (error) {
       console.error("Error fetching interview questions:", error);
     } finally {
@@ -61,14 +73,20 @@ export default function Index() {
     if (typeof window !== "undefined" && chrome?.storage) {
       chrome.storage.local.get("scrapedData", (data) => {
         if (data.scrapedData) {
-          const { desc, title, hostname } = data.scrapedData;
+          const { desc, title, hostname, questions } = data.scrapedData;
           setjobData((prev) => ({
             ...prev,
             jobTitle: title,
             jobDescription: desc,
             hostname: hostname,
+            questions: questions || [],
           }));
-          getInterviewQuestions(desc, title);
+
+          if (!questions || questions.length === 0) {
+            getInterviewQuestions(desc, title);
+          } else {
+            setsection("Questions");
+          }
         }
       });
     }
