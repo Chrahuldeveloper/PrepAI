@@ -9,20 +9,14 @@
     "48": "/icons/icon48.png",
     "192": "/icons/icon192.png"
   },
- "permissions": [
-        "storage",
-        "tabs",
-        "scripting"
-    ],
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": [
-          "https://internshala.com/internship/detail/*",
+        "https://internshala.com/internship/detail/*",
         "https://wellfound.com/jobs/*"
       ],
-      "js": [
-        "inject.js"
-      ]
+      "js": ["inject.js"]
     }
   ],
   "host_permissions": [
