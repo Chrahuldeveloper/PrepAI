@@ -1,4 +1,4 @@
-console.log("running");
+console.log("ALL THE BEST FOR YOUR JOB SEARCH!");
 
 const scrapeInterval = (scrapeFunction) => {
   let lastUrl = window.location.href;

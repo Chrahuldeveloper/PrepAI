@@ -15,6 +15,7 @@ export default function Index() {
     jobDescription: "",
     questions: [],
     hostname: "",
+    link: "",
   });
 
   const getInterviewQuestions = async (data, title) => {
@@ -73,13 +74,14 @@ export default function Index() {
     if (typeof window !== "undefined" && chrome?.storage) {
       chrome.storage.local.get("scrapedData", (data) => {
         if (data.scrapedData) {
-          const { desc, title, hostname, questions } = data.scrapedData;
+          const { desc, title, hostname, questions, link } = data.scrapedData;
           setjobData((prev) => ({
             ...prev,
             jobTitle: title,
             jobDescription: desc,
             hostname: hostname,
             questions: questions || [],
+            link: link,
           }));
 
           if (!questions || questions.length === 0) {
@@ -106,6 +108,7 @@ export default function Index() {
         title: jobData.jobTitle,
         hostname: jobData.hostname,
         timestamp: new Date().toISOString(),
+        link: jobData.link,
       };
 
       chrome.storage.local.get(["jobApplications"], (res) => {
@@ -233,7 +236,14 @@ export default function Index() {
                         <h1 style={{ fontSize: "18px", fontWeight: "500" }}>
                           {job.title}
                         </h1>
-                        <p>{job.hostname}</p>
+                        <p
+                          onClick={() => {
+                            chrome.tabs.create({ url: job.link });
+                          }}
+                          className="cursor-pointer"
+                        >
+                          {job.hostname}
+                        </p>
                       </div>
                     </div>
                     <button
