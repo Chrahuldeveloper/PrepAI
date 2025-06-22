@@ -10,3 +10,6 @@
 - 🤖 **AI Question Generator**: Instantly generates tailored interview questions based on the JD.
 - 🧩 **Platform Support**: Works with Wellfound and Internshala. More platforms coming soon.
 - ⚡ **1-Click Workflow**: No copy-pasting — just open the job post and click the extension.
+
+## 📦 Installation
+- **Link : https://chromewebstore.google.com/detail/interviewprep-ai/jfpbdijbapmdgnimkpdhmolmefjhbccp
