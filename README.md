@@ -12,4 +12,4 @@
 - ⚡ **1-Click Workflow**: No copy-pasting — just open the job post and click the extension.
 
 ## 📦 Installation
-- **Link : https://chromewebstore.google.com/detail/interviewprep-ai/jfpbdijbapmdgnimkpdhmolmefjhbccp
+Link : https://chromewebstore.google.com/detail/interviewprep-ai/jfpbdijbapmdgnimkpdhmolmefjhbccp
