@@ -9,7 +9,7 @@ export default function Index() {
   const [section, setsection] = useState("Job description");
   const [jobapplications, setjobapplications] = useState([]);
   const [isloading, setisloading] = useState(false);
-
+  const [toogleText, settoogleText] = useState("Save");
   const [jobData, setjobData] = useState({
     jobTitle: "",
     jobDescription: "",
@@ -128,6 +128,7 @@ export default function Index() {
       );
       chrome.storage.local.set({ jobApplications: updatedJobs }, () => {
         console.log("Job deleted successfully");
+        settoogleText("Saved");
         setjobapplications(updatedJobs);
       });
     });
@@ -142,7 +143,7 @@ export default function Index() {
         </div>
         <div>
           <button onClick={handleSaveJob} className="save-btn">
-            Save
+            {toogleText}
           </button>
         </div>
       </div>
@@ -192,6 +193,7 @@ export default function Index() {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                gap: "30px",
               }}
             >
               {jobapplications.map((job, id) => (
