@@ -116,6 +116,7 @@ export default function Index() {
         chrome.storage.local.set({ jobApplications: updatedJobs }, () => {
           console.log("Job saved successfully");
           setjobapplications(updatedJobs);
+          settoogleText("Saved");
         });
       });
     }
@@ -128,7 +129,6 @@ export default function Index() {
       );
       chrome.storage.local.set({ jobApplications: updatedJobs }, () => {
         console.log("Job deleted successfully");
-        settoogleText("Saved");
         setjobapplications(updatedJobs);
       });
     });
