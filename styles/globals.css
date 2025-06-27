@@ -176,6 +176,19 @@ body {
   padding-top: 10px;
 }
 
+.box {
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  background-color: #ededed;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  cursor: pointer;
+}
+
 .q-box:nth-child(3n + 1) {
   background-color: #e0edff;
   border-left: 5px solid #60a5fa;

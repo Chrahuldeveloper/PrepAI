@@ -5,6 +5,9 @@ import Image from "next/image";
 import { FiTrash } from "react-icons/fi";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { RiArrowDropUpLine } from "react-icons/ri";
+import { GoGoal } from "react-icons/go";
+import { MdOutlinePercent } from "react-icons/md";
+import { CiTrophy } from "react-icons/ci";
 
 export default function Index() {
   const [section, setsection] = useState("Job description");
@@ -18,7 +21,6 @@ export default function Index() {
     hostname: "",
     link: "",
   });
-  const [toogleArrow, settoogleArrow] = useState(false);
 
   const [openQuestionIndex, setopenQuestionIndex] = useState([]);
 
@@ -148,15 +150,17 @@ export default function Index() {
       </div>
 
       <ul className="list-items">
-        {["Job description", "Questions", "applications"].map((item) => (
-          <li
-            key={item}
-            className={section === item ? "item-highlight" : "item"}
-            onClick={() => setsection(item)}
-          >
-            {item === "applications" ? "Saved Applications" : item}
-          </li>
-        ))}
+        {["Job description", "Questions", "Score", "applications"].map(
+          (item) => (
+            <li
+              key={item}
+              className={section === item ? "item-highlight" : "item"}
+              onClick={() => setsection(item)}
+            >
+              {item === "applications" ? "Saved Applications" : item}
+            </li>
+          )
+        )}
       </ul>
 
       {isloading && section !== "applications" && (
@@ -267,11 +271,146 @@ export default function Index() {
         </div>
       )}
 
-      {section === "Questions" && (
+      {section === "Score" ? (
+        <>
+          <div
+            style={{
+              display: "flex",
+              gap: "15px",
+              justifyContent: "center",
+              alignContent: "center",
+              marginTop: "40px",
+            }}
+          >
+            <div className="box">
+              <CiTrophy
+                size={25}
+                color="white"
+                style={{
+                  backgroundColor: "#eab308",
+                  borderRadius: "50px",
+                  padding: "5px",
+                }}
+              />
+              <h1
+                style={{
+                  fontWeight: "300",
+                  fontSize: "20px",
+                }}
+              >
+                3.8/5
+              </h1>
+              <p>Average Score</p>
+            </div>
+            <div className="box">
+              <GoGoal
+                size={25}
+                color="white"
+                style={{
+                  backgroundColor: "#3b82f6",
+                  borderRadius: "50px",
+                  padding: "5px",
+                }}
+              />
+              <h1
+                style={{
+                  fontWeight: "300",
+                  fontSize: "20px",
+                }}
+              >
+                8/8
+              </h1>
+              <p>Questions Attempted</p>
+            </div>
+            <div className="box">
+              <MdOutlinePercent
+                size={25}
+                color="white"
+                style={{
+                  backgroundColor: "#22c55e",
+                  borderRadius: "50px",
+                  padding: "5px",
+                }}
+              />
+              <h1
+                style={{
+                  fontWeight: "300",
+                  fontSize: "20px",
+                }}
+              >
+                75%
+              </h1>
+              <p>Overall Score</p>
+            </div>
+          </div>
+          <div
+            style={{
+              backgroundColor: "#ededed",
+              border: "1px solid lightgray",
+              borderRadius: "5px",
+              width: "67vw",
+              margin: "16px auto",
+              padding: "10px",
+              height: "30vh",
+            }}
+          >
+            <div>
+              <h1
+                style={{
+                  fontSize: "25px",
+                  fontWeight: "500",
+                  padding: "5px",
+                }}
+              >
+                Overall Performance
+              </h1>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <p
+                  style={{
+                    color: "#7993ae",
+                    fontSize: "18px",
+                    fontWeight: "500",
+                    paddingLeft: "10px",
+                  }}
+                >
+                  Progress
+                </p>
+                <p>100</p>
+              </div>
+              <div style={{ width: "66vw", margin: "10px auto" }}>
+                <div
+                  style={{
+                    height: "10px",
+                    backgroundColor: "#f1f5f9",
+                    borderRadius: "9999px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      width: `${10}%`,
+                      backgroundColor: "#0f172a",
+                      transition: "width 0.3s ease-in-out",
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
+
+      {section === "Questions" ? (
         <div className="questions">
           {jobData.questions.length > 0 ? (
             jobData.questions.map((q, id) => (
-              <div key={id}>
+              <>
                 <div className="q-box" key={id}>
                   <div className="q-box-inner">
                     <h1 className="q-heading">{q}</h1>
@@ -283,7 +422,6 @@ export default function Index() {
                           cursor={"pointer"}
                           onClick={() => {
                             setopenQuestionIndex(null);
-                            settoogleArrow(false);
                           }}
                         />
                       ) : (
@@ -291,7 +429,6 @@ export default function Index() {
                           size={25}
                           color="black"
                           onClick={() => {
-                            settoogleArrow(true);
                             setopenQuestionIndex(id);
                           }}
                           cursor={"pointer"}
@@ -317,7 +454,7 @@ export default function Index() {
                     </div>
                   ) : null}
                 </div>
-              </div>
+              </>
             ))
           ) : (
             <p className="noq">No interview questions</p>
@@ -339,7 +476,7 @@ export default function Index() {
             </button>
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
