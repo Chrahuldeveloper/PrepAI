@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "InterviewPrep ai",
-  "version": "0.0.2",
-  "description": "InterviewPrep ai",
+  "version": "0.0.3",
+  "description": "Level up your job search with AI-powered interview prep. Get tailored interview questions based on job descriptions, save your job applications for easy access, and stay ready for every opportunity",
   "icons": {
     "16": "/icons/icon16.png",
     "32": "/icons/icon32.png",
@@ -14,7 +14,8 @@
     {
       "matches": [
         "https://internshala.com/internship/detail/*",
-        "https://wellfound.com/jobs/*"
+        "https://wellfound.com/jobs/*",
+        "https://internshala.com/job/detail/*"
       ],
       "js": ["inject.js"]
     }
