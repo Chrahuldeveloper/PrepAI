@@ -44,7 +44,6 @@ body {
   border-radius: 8px;
 }
 
-
 .save-btn {
   background: linear-gradient(to right, #6366f1, #a855f7);
   color: white;
@@ -161,7 +160,21 @@ body {
   transition: 0.3s;
 }
 
+.q-box-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.ans-box {
+  width: 97%;
+  max-width: 700px;
+  margin-top: 5px;
+  outline: none;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
 
 .q-box:nth-child(3n + 1) {
   background-color: #e0edff;
@@ -177,7 +190,6 @@ body {
   background-color: #e9fbe6;
   border-left: 5px solid #4ade80;
 }
-
 
 .q-heading {
   font-size: 16px;

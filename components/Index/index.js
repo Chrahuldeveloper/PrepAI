@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { LuLoaderCircle } from "react-icons/lu";
-import { saveAs } from "file-saver";
 import Image from "next/image";
 import { FiTrash } from "react-icons/fi";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropUpLine } from "react-icons/ri";
 
 export default function Index() {
   const [section, setsection] = useState("Job description");
@@ -13,10 +14,15 @@ export default function Index() {
   const [jobData, setjobData] = useState({
     jobTitle: "",
     jobDescription: "",
-    questions: [],
+    questions: ["what is React?", "what is nextjs?", "what is ts?"],
     hostname: "",
     link: "",
   });
+  const [toogleArrow, settoogleArrow] = useState(false);
+
+  const [openQuestionIndex, setopenQuestionIndex] = useState([]);
+
+  const [answers, setanswers] = useState({});
 
   const getInterviewQuestions = async (data, title) => {
     try {
@@ -61,13 +67,6 @@ export default function Index() {
     } finally {
       setisloading(false);
     }
-  };
-
-  const exportFile = () => {
-    const blobdata = new Blob([jobData.questions.join("\n\n")], {
-      type: "text/plain;charset=utf-8",
-    });
-    saveAs(blobdata, "questions.txt");
   };
 
   useEffect(() => {
@@ -272,8 +271,52 @@ export default function Index() {
         <div className="questions">
           {jobData.questions.length > 0 ? (
             jobData.questions.map((q, id) => (
-              <div className="q-box" key={id}>
-                <h1 className="q-heading">{q}</h1>
+              <div key={id}>
+                <div className="q-box" key={id}>
+                  <div className="q-box-inner">
+                    <h1 className="q-heading">{q}</h1>
+                    <div>
+                      {id === openQuestionIndex ? (
+                        <RiArrowDropUpLine
+                          size={25}
+                          color="black"
+                          cursor={"pointer"}
+                          onClick={() => {
+                            setopenQuestionIndex(null);
+                            settoogleArrow(false);
+                          }}
+                        />
+                      ) : (
+                        <RiArrowDropDownLine
+                          size={25}
+                          color="black"
+                          onClick={() => {
+                            settoogleArrow(true);
+                            setopenQuestionIndex(id);
+                          }}
+                          cursor={"pointer"}
+                        />
+                      )}
+                    </div>
+                  </div>
+                  {id === openQuestionIndex ? (
+                    <div>
+                      <textarea
+                        cols={8}
+                        rows={8}
+                        value={answers[id] || ""}
+                        onChange={(e) => {
+                          setanswers((prev) => ({
+                            ...prev,
+                            [id]: e.target.value,
+                          }));
+                        }}
+                        className="ans-box"
+                        placeholder="Enter your Answer"
+                      />
+                    </div>
+                  ) : null}
+                </div>
               </div>
             ))
           ) : (
@@ -281,8 +324,18 @@ export default function Index() {
           )}
 
           {jobData.questions.length > 0 && (
-            <button onClick={exportFile} className="btn-export">
-              Export File
+            <button
+              className="btn-export"
+              onClick={() => {
+                const qaPairs = jobData.questions.map((q, idx) => ({
+                  question: q,
+                  answer: answers[idx] || "",
+                }));
+
+                console.log(qaPairs);
+              }}
+            >
+              Submit
             </button>
           )}
         </div>
