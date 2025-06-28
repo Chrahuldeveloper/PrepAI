@@ -24,6 +24,12 @@ export default function Index() {
 
   const [openQuestionIndex, setopenQuestionIndex] = useState([]);
 
+  const [analysis, setanalysis] = useState({
+    averageScore: 0,
+    questionsAttempted: 0,
+    overallScore: 0,
+  });
+
   const [answers, setanswers] = useState({});
 
   const getInterviewQuestions = async (data, title) => {
@@ -134,8 +140,32 @@ export default function Index() {
     });
   };
 
-  const getAnalysis = () => {
-    const url = "https://analysis-ai.chrahulofficial.workers.dev/";
+  const getAnalysis = async (data) => {
+    try {
+      console.log(data);
+      const res = await fetch(
+        "https://analysis-ai.chrahulofficial.workers.dev",
+        {
+          method: "POST",
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ questions: data }),
+        }
+      );
+      const aidata = await res.json();
+
+      setanalysis((prev) => ({
+        ...prev,
+        averageScore: aidata.averageScore,
+        overallScore: aidata.overallScore,
+        questionsAttempted: aidata.questionsAttempted,
+      }));
+      console.log(aidata);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -301,7 +331,7 @@ export default function Index() {
                   fontSize: "20px",
                 }}
               >
-                3.8/5
+                {analysis.averageScore}
               </h1>
               <p>Average Score</p>
             </div>
@@ -321,7 +351,7 @@ export default function Index() {
                   fontSize: "20px",
                 }}
               >
-                8/8
+                {analysis.questionsAttempted}
               </h1>
               <p>Questions Attempted</p>
             </div>
@@ -341,7 +371,7 @@ export default function Index() {
                   fontSize: "20px",
                 }}
               >
-                75%
+                {analysis.overallScore}
               </h1>
               <p>Overall Score</p>
             </div>
@@ -397,7 +427,7 @@ export default function Index() {
                   <div
                     style={{
                       height: "100%",
-                      width: `${10}%`,
+                      width: `${analysis.overallScore}%`,
                       backgroundColor: "#0f172a",
                       transition: "width 0.3s ease-in-out",
                     }}
@@ -471,8 +501,7 @@ export default function Index() {
                   question: q,
                   answer: answers[idx] || "",
                 }));
-
-                console.log(qaPairs);
+                getAnalysis(qaPairs);
               }}
             >
               Submit
