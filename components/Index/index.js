@@ -29,7 +29,6 @@ export default function Index() {
   const getInterviewQuestions = async (data, title) => {
     try {
       setisloading(true);
-
       const res = await fetch(
         "https://billowing-block-bbc2.chrahulofficial.workers.dev",
         {
@@ -133,6 +132,10 @@ export default function Index() {
         setjobapplications(updatedJobs);
       });
     });
+  };
+
+  const getAnalysis = () => {
+    const url = "https://analysis-ai.chrahulofficial.workers.dev/";
   };
 
   return (

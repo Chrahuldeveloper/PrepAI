@@ -14,11 +14,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@cloudflare/ai": "^1.2.2",
     "file-saver": "^2.0.5",
     "glob": "^10.2.3",
     "next": "^13.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.22.0"
   }
 }
