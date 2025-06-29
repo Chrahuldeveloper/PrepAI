@@ -383,14 +383,19 @@ export default function Index() {
                   backgroundColor: "#ededed",
                   border: "1px solid lightgray",
                   borderRadius: "5px",
-                  width: "80vw",
-                  margin: "16px auto",
                   padding: "10px",
                   height: "30vh",
                   paddingTop: "-20px",
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop : "8px"
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    width: "80vw",
+                  }}
+                >
                   <h1
                     style={{
                       fontSize: "20px",
@@ -405,6 +410,7 @@ export default function Index() {
                       display: "flex",
                       justifyContent: "space-between",
                       paddingTop: "-15px",
+                      width: "70vw",
                     }}
                   >
                     <p
@@ -454,7 +460,9 @@ export default function Index() {
                         fontWeight: "700",
                       }}
                     >
-                      {analysis.overallScore >= 90
+                      {analysis.overallScore === 0
+                        ? ""
+                        : analysis.overallScore >= 90
                         ? "🏆 Outstanding! You're crushing it. Your prep is on point — just maintain this consistency and you're interview-ready."
                         : analysis.overallScore >= 75
                         ? "🔥 Great job! You're doing really well. A little more practice and you’ll be in the top tier. Keep pushing!"
@@ -464,9 +472,7 @@ export default function Index() {
                         ? "🔄 You're getting there. Some answers are solid, but there’s room to improve. Focus on clarity and accuracy."
                         : analysis.overallScore >= 20
                         ? "🧱 Not bad. You're starting to get the hang of it. Review the questions again and try to fill in the gaps."
-                        : analysis.overallScore <= 19
-                        ? "🌱 Everyone starts somewhere. Don’t be discouraged — use this as a baseline and build up from here. You’ve got this 💫"
-                        : ""}
+                        : "🌱 Everyone starts somewhere. Don’t be discouraged — use this as a baseline and build up from here. You’ve got this 💫"}
                     </p>
                   </div>
                 </div>
@@ -484,6 +490,7 @@ export default function Index() {
                     display: "flex",
                     alignContent: "center",
                     gap: "6px",
+                    marginTop : "10px"
                   }}
                   onClick={() => {
                     setanalysis((prev) => ({
@@ -527,25 +534,22 @@ export default function Index() {
                   <div className="q-box-inner">
                     <h1 className="q-heading">{q}</h1>
                     <div>
-                      {id === openQuestionIndex ? (
-                        <RiArrowDropUpLine
-                          size={25}
-                          color="black"
-                          cursor={"pointer"}
-                          onClick={() => {
-                            setopenQuestionIndex(null);
-                          }}
-                        />
-                      ) : (
-                        <RiArrowDropDownLine
-                          size={25}
-                          color="black"
-                          onClick={() => {
-                            setopenQuestionIndex(id);
-                          }}
-                          cursor={"pointer"}
-                        />
-                      )}
+                      {id !== 0 &&
+                        (id === openQuestionIndex ? (
+                          <RiArrowDropUpLine
+                            size={25}
+                            color="black"
+                            cursor="pointer"
+                            onClick={() => setopenQuestionIndex(null)}
+                          />
+                        ) : (
+                          <RiArrowDropDownLine
+                            size={25}
+                            color="black"
+                            cursor="pointer"
+                            onClick={() => setopenQuestionIndex(id)}
+                          />
+                        ))}
                     </div>
                   </div>
                   {id === openQuestionIndex ? (
