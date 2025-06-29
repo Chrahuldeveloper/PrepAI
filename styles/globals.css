@@ -5,6 +5,12 @@
   font-style: normal;
 }
 
+* {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 body {
   font-family: "YourFont", "Roboto", sans-serif;
   overflow: hidden;

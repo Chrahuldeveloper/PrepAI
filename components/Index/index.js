@@ -156,7 +156,6 @@ export default function Index() {
         }
       );
       const aidata = await res.json();
-
       setanalysis((prev) => ({
         ...prev,
         averageScore: aidata.averageScore,
@@ -384,16 +383,17 @@ export default function Index() {
                   backgroundColor: "#ededed",
                   border: "1px solid lightgray",
                   borderRadius: "5px",
-                  width: "67vw",
+                  width: "80vw",
                   margin: "16px auto",
                   padding: "10px",
                   height: "30vh",
+                  paddingTop: "-20px",
                 }}
               >
                 <div>
                   <h1
                     style={{
-                      fontSize: "25px",
+                      fontSize: "20px",
                       fontWeight: "500",
                       padding: "5px",
                     }}
@@ -404,6 +404,7 @@ export default function Index() {
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
+                      paddingTop: "-15px",
                     }}
                   >
                     <p
@@ -425,7 +426,7 @@ export default function Index() {
                       100
                     </p>
                   </div>
-                  <div style={{ width: "66vw", margin: "10px auto" }}>
+                  <div style={{ width: "66vw", margin: "0px auto" }}>
                     <div
                       style={{
                         height: "10px",
@@ -448,7 +449,7 @@ export default function Index() {
                     <p
                       style={{
                         textAlign: "center",
-                        paddingTop: "10px",
+                        paddingTop: "2px",
                         color: "gray",
                         fontWeight: "700",
                       }}
@@ -463,7 +464,9 @@ export default function Index() {
                         ? "🔄 You're getting there. Some answers are solid, but there’s room to improve. Focus on clarity and accuracy."
                         : analysis.overallScore >= 20
                         ? "🧱 Not bad. You're starting to get the hang of it. Review the questions again and try to fill in the gaps."
-                        : "🌱 Everyone starts somewhere. Don’t be discouraged — use this as a baseline and build up from here. You’ve got this 💫"}
+                        : analysis.overallScore <= 19
+                        ? "🌱 Everyone starts somewhere. Don’t be discouraged — use this as a baseline and build up from here. You’ve got this 💫"
+                        : ""}
                     </p>
                   </div>
                 </div>
@@ -572,12 +575,16 @@ export default function Index() {
           {jobData.questions.length > 0 && (
             <button
               className="btn-export"
-              onClick={() => {
-                const qaPairs = jobData.questions.map((q, idx) => ({
-                  question: q,
-                  answer: answers[idx] || "",
-                }));
-                getAnalysis(qaPairs);
+              onClick={async () => {
+                try {
+                  const qaPairs = jobData.questions.map((q, idx) => ({
+                    question: q,
+                    answer: answers[idx] || "",
+                  }));
+                  await getAnalysis(qaPairs);
+                } catch (error) {
+                  console.log(error);
+                }
               }}
             >
               Submit
