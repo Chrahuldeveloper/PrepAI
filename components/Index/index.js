@@ -8,6 +8,7 @@ import { RiArrowDropUpLine } from "react-icons/ri";
 import { GoGoal } from "react-icons/go";
 import { MdOutlinePercent } from "react-icons/md";
 import { CiTrophy } from "react-icons/ci";
+import { RiResetLeftFill } from "react-icons/ri";
 
 export default function Index() {
   const [section, setsection] = useState("Job description");
@@ -466,6 +467,33 @@ export default function Index() {
                     </p>
                   </div>
                 </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center",
+                }}
+              >
+                <button
+                  className="btn-export"
+                  style={{
+                    display: "flex",
+                    alignContent: "center",
+                    gap: "6px",
+                  }}
+                  onClick={() => {
+                    setanalysis((prev) => ({
+                      ...prev,
+                      averageScore: "",
+                      overallScore: "",
+                      questionsAttempted: "",
+                    }));
+                    setsection("Questions");
+                  }}
+                >
+                  <RiResetLeftFill size={18} color="white" /> Reset
+                </button>
               </div>
             </>
           ) : (
