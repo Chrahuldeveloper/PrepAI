@@ -162,7 +162,7 @@ export default function Index() {
         overallScore: aidata.overallScore,
         questionsAttempted: aidata.questionsAttempted,
       }));
-      console.log(aidata);
+      setsection("Score");
     } catch (error) {
       console.log(error);
     }
@@ -306,136 +306,184 @@ export default function Index() {
 
       {section === "Score" ? (
         <>
-          <div
-            style={{
-              display: "flex",
-              gap: "15px",
-              justifyContent: "center",
-              alignContent: "center",
-              marginTop: "40px",
-            }}
-          >
-            <div className="box">
-              <CiTrophy
-                size={25}
-                color="white"
-                style={{
-                  backgroundColor: "#eab308",
-                  borderRadius: "50px",
-                  padding: "5px",
-                }}
-              />
-              <h1
-                style={{
-                  fontWeight: "300",
-                  fontSize: "20px",
-                }}
-              >
-                {analysis.averageScore}
-              </h1>
-              <p>Average Score</p>
-            </div>
-            <div className="box">
-              <GoGoal
-                size={25}
-                color="white"
-                style={{
-                  backgroundColor: "#3b82f6",
-                  borderRadius: "50px",
-                  padding: "5px",
-                }}
-              />
-              <h1
-                style={{
-                  fontWeight: "300",
-                  fontSize: "20px",
-                }}
-              >
-                {analysis.questionsAttempted}
-              </h1>
-              <p>Questions Attempted</p>
-            </div>
-            <div className="box">
-              <MdOutlinePercent
-                size={25}
-                color="white"
-                style={{
-                  backgroundColor: "#22c55e",
-                  borderRadius: "50px",
-                  padding: "5px",
-                }}
-              />
-              <h1
-                style={{
-                  fontWeight: "300",
-                  fontSize: "20px",
-                }}
-              >
-                {analysis.overallScore}
-              </h1>
-              <p>Overall Score</p>
-            </div>
-          </div>
-          <div
-            style={{
-              backgroundColor: "#ededed",
-              border: "1px solid lightgray",
-              borderRadius: "5px",
-              width: "67vw",
-              margin: "16px auto",
-              padding: "10px",
-              height: "30vh",
-            }}
-          >
-            <div>
-              <h1
-                style={{
-                  fontSize: "25px",
-                  fontWeight: "500",
-                  padding: "5px",
-                }}
-              >
-                Overall Performance
-              </h1>
+          {Object.values(analysis).every((i) => i !== "") ? (
+            <>
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  gap: "15px",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  marginTop: "40px",
                 }}
               >
-                <p
-                  style={{
-                    color: "#7993ae",
-                    fontSize: "18px",
-                    fontWeight: "500",
-                    paddingLeft: "10px",
-                  }}
-                >
-                  Progress
-                </p>
-                <p>100</p>
-              </div>
-              <div style={{ width: "66vw", margin: "10px auto" }}>
-                <div
-                  style={{
-                    height: "10px",
-                    backgroundColor: "#f1f5f9",
-                    borderRadius: "9999px",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
+                <div className="box">
+                  <CiTrophy
+                    size={25}
+                    color="white"
                     style={{
-                      height: "100%",
-                      width: `${analysis.overallScore}%`,
-                      backgroundColor: "#0f172a",
-                      transition: "width 0.3s ease-in-out",
+                      backgroundColor: "#eab308",
+                      borderRadius: "50px",
+                      padding: "5px",
                     }}
-                  ></div>
+                  />
+                  <h1
+                    style={{
+                      fontWeight: "300",
+                      fontSize: "20px",
+                    }}
+                  >
+                    {analysis.averageScore}
+                  </h1>
+                  <p>Average Score</p>
+                </div>
+                <div className="box">
+                  <GoGoal
+                    size={25}
+                    color="white"
+                    style={{
+                      backgroundColor: "#3b82f6",
+                      borderRadius: "50px",
+                      padding: "5px",
+                    }}
+                  />
+                  <h1
+                    style={{
+                      fontWeight: "300",
+                      fontSize: "20px",
+                    }}
+                  >
+                    {analysis.questionsAttempted}
+                  </h1>
+                  <p>Questions Attempted</p>
+                </div>
+                <div className="box">
+                  <MdOutlinePercent
+                    size={25}
+                    color="white"
+                    style={{
+                      backgroundColor: "#22c55e",
+                      borderRadius: "50px",
+                      padding: "5px",
+                    }}
+                  />
+                  <h1
+                    style={{
+                      fontWeight: "300",
+                      fontSize: "20px",
+                    }}
+                  >
+                    {analysis.overallScore}%
+                  </h1>
+                  <p>Overall Score</p>
                 </div>
               </div>
-            </div>
-          </div>
+              <div
+                style={{
+                  backgroundColor: "#ededed",
+                  border: "1px solid lightgray",
+                  borderRadius: "5px",
+                  width: "67vw",
+                  margin: "16px auto",
+                  padding: "10px",
+                  height: "30vh",
+                }}
+              >
+                <div>
+                  <h1
+                    style={{
+                      fontSize: "25px",
+                      fontWeight: "500",
+                      padding: "5px",
+                    }}
+                  >
+                    Overall Performance
+                  </h1>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: "gray",
+                        fontWeight: "700",
+                        fontSize: "18px",
+                        paddingLeft: "10px",
+                      }}
+                    >
+                      Progress
+                    </p>
+                    <p
+                      style={{
+                        color: "gray",
+                        fontWeight: "700",
+                      }}
+                    >
+                      100
+                    </p>
+                  </div>
+                  <div style={{ width: "66vw", margin: "10px auto" }}>
+                    <div
+                      style={{
+                        height: "10px",
+                        backgroundColor: "#f1f5f9",
+                        borderRadius: "9999px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "100%",
+                          width: `${analysis.overallScore}%`,
+                          backgroundColor: "#0f172a",
+                          transition: "width 0.3s ease-in-out",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div>
+                    <p
+                      style={{
+                        textAlign: "center",
+                        paddingTop: "10px",
+                        color: "gray",
+                        fontWeight: "700",
+                      }}
+                    >
+                      {analysis.overallScore >= 90
+                        ? "🏆 Outstanding! You're crushing it. Your prep is on point — just maintain this consistency and you're interview-ready."
+                        : analysis.overallScore >= 75
+                        ? "🔥 Great job! You're doing really well. A little more practice and you’ll be in the top tier. Keep pushing!"
+                        : analysis.overallScore >= 60
+                        ? "💪 Good effort. You’ve got a strong foundation — refine your answers and you’ll see a big improvement."
+                        : analysis.overallScore >= 40
+                        ? "🔄 You're getting there. Some answers are solid, but there’s room to improve. Focus on clarity and accuracy."
+                        : analysis.overallScore >= 20
+                        ? "🧱 Not bad. You're starting to get the hang of it. Review the questions again and try to fill in the gaps."
+                        : "🌱 Everyone starts somewhere. Don’t be discouraged — use this as a baseline and build up from here. You’ve got this 💫"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <p
+                  style={{
+                    textAlign: "center",
+                    paddingTop: "20px",
+                  }}
+                  className="noq"
+                >
+                  Please attempt some questions to see your performance insights
+                  here
+                </p>
+              </div>
+            </>
+          )}
         </>
       ) : null}
 
