@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "InterviewPrep ai",
+  "name": "PrepAI",
   "version": "0.0.4",
   "description": "AI-powered interview prep: get tailored questions, save job applications, and stay ready for every opportunity",
   "icons": {
