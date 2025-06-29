@@ -415,8 +415,7 @@ export default function Index() {
                   >
                     <p
                       style={{
-                        color: "gray",
-                        fontWeight: "700",
+                        fontWeight: "500",
                         fontSize: "18px",
                         paddingLeft: "10px",
                       }}
@@ -425,7 +424,6 @@ export default function Index() {
                     </p>
                     <p
                       style={{
-                        color: "gray",
                         fontWeight: "700",
                       }}
                     >
