@@ -45,17 +45,16 @@ function scrapeNaukri() {
   const descElem = document.querySelector(".styles_description__36q7q");
   extractData(titleElem, descElem);
 }
-
 chrome.storage.local.get("scrapedData", (data) => {
-  const currentHostName = window.location.hostname;
+  const currentUrl = window.location.href;
 
-  if (!data.scrapedData || data.scrapedData.hostname !== currentHostName) {
-    console.log("No scraped data found, starting scraping...");
+  if (!data.scrapedData || data.scrapedData.link !== currentUrl) {
+    console.log("No scraped data found for this URL, starting scraping...");
     scrapeInterval(scrapeInternshalaJob);
     scrapeInterval(scrapeNaukri);
     scrapeInternshalaJob();
     scrapeNaukri();
   } else {
-    console.log("Scraped data already exists. Skipping scraping.");
+    console.log("Scraped data already exists for this URL. Skipping scraping.");
   }
 });

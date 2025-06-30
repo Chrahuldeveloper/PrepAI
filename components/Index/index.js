@@ -18,7 +18,7 @@ export default function Index() {
   const [jobData, setjobData] = useState({
     jobTitle: "",
     jobDescription: "",
-    questions: ["what is React?", "what is nextjs?", "what is ts?"],
+    questions: [],
     hostname: "",
     link: "",
   });
@@ -172,8 +172,7 @@ export default function Index() {
     <div>
       <div className="header-top">
         <div className="top-bar">
-          <div className="logo-box">IP</div>
-          <h1 className="top-bar-heading">InterviewPrep.ai</h1>
+          <div className="logo-box">PREP.AI</div>
         </div>
         <div>
           <button onClick={handleSaveJob} className="save-btn">
@@ -306,7 +305,7 @@ export default function Index() {
 
       {section === "Score" ? (
         <>
-          {Object.values(analysis).every((i) => i !== "") ? (
+          {analysis.questionsAttempted > 0 ? (
             <>
               <div
                 style={{
@@ -388,7 +387,7 @@ export default function Index() {
                   paddingTop: "-20px",
                   display: "flex",
                   justifyContent: "center",
-                  marginTop : "8px"
+                  marginTop: "8px",
                 }}
               >
                 <div
@@ -488,7 +487,7 @@ export default function Index() {
                     display: "flex",
                     alignContent: "center",
                     gap: "6px",
-                    marginTop : "10px"
+                    marginTop: "10px",
                   }}
                   onClick={() => {
                     setanalysis((prev) => ({
