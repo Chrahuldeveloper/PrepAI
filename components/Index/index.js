@@ -172,7 +172,7 @@ export default function Index() {
     <div>
       <div className="header-top">
         <div className="top-bar">
-          <div className="logo-box">PREP.AI</div>
+          <div className="logo-box">Crakup</div>
         </div>
         <div>
           <button onClick={handleSaveJob} className="save-btn">
