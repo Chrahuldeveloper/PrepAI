@@ -24,6 +24,7 @@ export default function Index() {
   });
 
   const [openQuestionIndex, setopenQuestionIndex] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [analysis, setanalysis] = useState({
     averageScore: 0,
@@ -172,7 +173,7 @@ export default function Index() {
     <div>
       <div className="header-top">
         <div className="top-bar">
-          <div className="logo-box">Crakup</div>
+          <div className="logo-box">IP</div>
         </div>
         <div>
           <button onClick={handleSaveJob} className="save-btn">
@@ -576,7 +577,9 @@ export default function Index() {
           {jobData.questions.length > 0 && (
             <button
               className="btn-export"
+              disabled={isSubmitting}
               onClick={async () => {
+                setIsSubmitting(true);
                 try {
                   const qaPairs = jobData.questions.map((q, idx) => ({
                     question: q,
@@ -585,6 +588,8 @@ export default function Index() {
                   await getAnalysis(qaPairs);
                 } catch (error) {
                   console.log(error);
+                } finally {
+                  setIsSubmitting(false);
                 }
               }}
             >
