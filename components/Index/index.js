@@ -9,6 +9,7 @@ import { GoGoal } from "react-icons/go";
 import { MdOutlinePercent } from "react-icons/md";
 import { CiTrophy } from "react-icons/ci";
 import { RiResetLeftFill } from "react-icons/ri";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Index() {
   const [section, setsection] = useState("Job description");
@@ -240,6 +241,7 @@ export default function Index() {
                       alignItems: "center",
                       justifyContent: "space-between",
                       gap: "15px",
+                      backgroundColor: "#16213e",
                     }}
                   >
                     <div
@@ -271,14 +273,23 @@ export default function Index() {
                         />
                       )}
                       <div>
-                        <h1 style={{ fontSize: "18px", fontWeight: "500" }}>
+                        <h1
+                          style={{
+                            fontSize: "18px",
+                            fontWeight: "500",
+                            color: "white",
+                          }}
+                        >
                           {job.title}
                         </h1>
                         <p
                           onClick={() => {
                             chrome.tabs.create({ url: job.link });
                           }}
-                          className="cursor-pointer"
+                          style={{
+                            color: "white",
+                            cursor: "pointer",
+                          }}
                         >
                           {job.hostname}
                         </p>
@@ -306,7 +317,7 @@ export default function Index() {
 
       {section === "Score" ? (
         <>
-          {analysis.questionsAttempted > 0 ? (
+          {analysis.questionsAttempted === 0 ? (
             <>
               <div
                 style={{
@@ -380,57 +391,17 @@ export default function Index() {
               </div>
               <div
                 style={{
-                  backgroundColor: "#ededed",
-                  border: "1px solid lightgray",
-                  borderRadius: "5px",
                   padding: "10px",
                   height: "30vh",
                   paddingTop: "-20px",
                   display: "flex",
                   justifyContent: "center",
                   marginTop: "8px",
+                  color: "white",
                 }}
               >
-                <div
-                  style={{
-                    width: "80vw",
-                  }}
-                >
-                  <h1
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: "500",
-                      padding: "5px",
-                    }}
-                  >
-                    Overall Performance
-                  </h1>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      paddingTop: "-15px",
-                      width: "70vw",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontWeight: "500",
-                        fontSize: "18px",
-                        paddingLeft: "10px",
-                      }}
-                    >
-                      Progress
-                    </p>
-                    <p
-                      style={{
-                        fontWeight: "700",
-                      }}
-                    >
-                      100
-                    </p>
-                  </div>
-                  <div style={{ width: "66vw", margin: "0px auto" }}>
+                <div>
+                  <div style={{ width: "90vw", margin: "10px auto" }}>
                     <div
                       style={{
                         height: "10px",
@@ -443,7 +414,7 @@ export default function Index() {
                         style={{
                           height: "100%",
                           width: `${analysis.overallScore}%`,
-                          backgroundColor: "#0f172a",
+                          backgroundColor: "#2881c1",
                           transition: "width 0.3s ease-in-out",
                         }}
                       ></div>
@@ -480,6 +451,7 @@ export default function Index() {
                   display: "flex",
                   justifyContent: "center",
                   alignContent: "center",
+                  marginTop: "-100px",
                 }}
               >
                 <button
@@ -488,7 +460,7 @@ export default function Index() {
                     display: "flex",
                     alignContent: "center",
                     gap: "6px",
-                    marginTop: "10px",
+                    
                   }}
                   onClick={() => {
                     setanalysis((prev) => ({
@@ -531,42 +503,50 @@ export default function Index() {
                 <div className="q-box" key={id}>
                   <div className="q-box-inner">
                     <h1 className="q-heading">{q}</h1>
-                    <div>
+                    <div className="arrow-icon">
                       {id !== 0 &&
                         (id === openQuestionIndex ? (
                           <RiArrowDropUpLine
-                            size={25}
-                            color="black"
+                            size={30}
+                            color="#ffffff"
                             cursor="pointer"
                             onClick={() => setopenQuestionIndex(null)}
                           />
                         ) : (
                           <RiArrowDropDownLine
-                            size={25}
-                            color="black"
+                            size={30}
+                            color="#ffffff"
                             cursor="pointer"
                             onClick={() => setopenQuestionIndex(id)}
                           />
                         ))}
                     </div>
                   </div>
-                  {id === openQuestionIndex ? (
-                    <div>
-                      <textarea
-                        cols={8}
-                        rows={8}
-                        value={answers[id] || ""}
-                        onChange={(e) => {
-                          setanswers((prev) => ({
-                            ...prev,
-                            [id]: e.target.value,
-                          }));
-                        }}
-                        className="ans-box"
-                        placeholder="Enter your Answer"
-                      />
-                    </div>
-                  ) : null}
+
+                  <AnimatePresence>
+                    {id === openQuestionIndex && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        style={{ overflow: "hidden", width: "100%" }}
+                      >
+                        <textarea
+                          className="ans-box"
+                          placeholder="Enter your answer here..."
+                          rows={6}
+                          value={answers[id] || ""}
+                          onChange={(e) =>
+                            setanswers((prev) => ({
+                              ...prev,
+                              [id]: e.target.value,
+                            }))
+                          }
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </>
             ))
