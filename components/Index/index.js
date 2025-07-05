@@ -317,7 +317,7 @@ export default function Index() {
 
       {section === "Score" ? (
         <>
-          {analysis.questionsAttempted === 0 ? (
+          {analysis.questionsAttempted > 0 ? (
             <>
               <div
                 style={{
