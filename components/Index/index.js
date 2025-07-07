@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { LuLoaderCircle } from "react-icons/lu";
 import Image from "next/image";
 import { FiTrash } from "react-icons/fi";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { RiArrowDropUpLine } from "react-icons/ri";
-import { GoGoal } from "react-icons/go";
-import { MdOutlinePercent } from "react-icons/md";
-import { CiTrophy } from "react-icons/ci";
-import { RiResetLeftFill } from "react-icons/ri";
+import { RiTimerLine } from "react-icons/ri";
+import { CiPlay1 } from "react-icons/ci";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { MdDescription, MdQuestionAnswer, MdScore } from "react-icons/md";
+import { FaRegSave } from "react-icons/fa";
+import { IoPauseOutline } from "react-icons/io5";
+import logo from "../../pages/logo.png";
 export default function Index() {
   const [section, setsection] = useState("Job description");
   const [jobapplications, setjobapplications] = useState([]);
@@ -28,9 +27,12 @@ export default function Index() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [analysis, setanalysis] = useState({
-    averageScore: 0,
     questionsAttempted: 0,
+    averageScore: 0,
     overallScore: 0,
+    relevance: 0,
+    technicalDepth: 0,
+    clarityCommunication: 0,
   });
 
   const [answers, setanswers] = useState({});
@@ -163,6 +165,9 @@ export default function Index() {
         averageScore: aidata.averageScore,
         overallScore: aidata.overallScore,
         questionsAttempted: aidata.questionsAttempted,
+        relevance: aidata.relevance,
+        technicalDepth: aidata.technicalDepth,
+        clarityCommunication: aidata.clarityCommunication,
       }));
       setsection("Score");
     } catch (error) {
@@ -174,7 +179,13 @@ export default function Index() {
     <div>
       <div className="header-top">
         <div className="top-bar">
-          <div className="logo-box">IP</div>
+          <div className="">
+            <Image src={logo} style={{ width: "80px", height: "80px" }} />
+          </div>
+          <div>
+            <h1 className="top-bar-heading">Interview Prep AI</h1>
+            <p className="top-bar-para">AI Powered</p>
+          </div>
         </div>
         <div>
           <button onClick={handleSaveJob} className="save-btn">
@@ -184,17 +195,25 @@ export default function Index() {
       </div>
 
       <ul className="list-items">
-        {["Job description", "Questions", "Score", "applications"].map(
-          (item) => (
-            <li
-              key={item}
-              className={section === item ? "item-highlight" : "item"}
-              onClick={() => setsection(item)}
-            >
-              {item === "applications" ? "Saved Applications" : item}
-            </li>
-          )
-        )}
+        {[
+          {
+            key: "Job description",
+            label: "Job description",
+            icon: MdDescription,
+          },
+          { key: "Questions", label: "Questions", icon: MdQuestionAnswer },
+          { key: "Score", label: "Score", icon: MdScore },
+          { key: "applications", label: "Saved Applications", icon: FaRegSave },
+        ].map(({ key, label, icon: Icon }) => (
+          <li
+            key={key}
+            className={section === key ? "item-highlight" : "item"}
+            onClick={() => setsection(key)}
+          >
+            <Icon size={16} className="mr-1 inline-block align-text-top" />
+            <div>{label}</div>
+          </li>
+        ))}
       </ul>
 
       {isloading && section !== "applications" && (
@@ -241,7 +260,9 @@ export default function Index() {
                       alignItems: "center",
                       justifyContent: "space-between",
                       gap: "15px",
-                      backgroundColor: "#16213e",
+                      border: "1px solid #024059",
+                      padding:"15px",
+                      borderRadius:"25px"
                     }}
                   >
                     <div
@@ -287,7 +308,7 @@ export default function Index() {
                             chrome.tabs.create({ url: job.link });
                           }}
                           style={{
-                            color: "white",
+                            color: "#7e8490",
                             cursor: "pointer",
                           }}
                         >
@@ -322,158 +343,113 @@ export default function Index() {
               <div
                 style={{
                   display: "flex",
-                  gap: "15px",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  marginTop: "40px",
+                  padding: "40px 20px",
+                  gap: "30px",
                 }}
               >
-                <div className="box">
-                  <CiTrophy
-                    size={25}
-                    color="white"
-                    style={{
-                      backgroundColor: "#eab308",
-                      borderRadius: "50px",
-                      padding: "5px",
-                    }}
-                  />
-                  <h1
-                    style={{
-                      fontWeight: "300",
-                      fontSize: "20px",
-                    }}
-                  >
-                    {analysis.averageScore}
-                  </h1>
-                  <p>Average Score</p>
-                </div>
-                <div className="box">
-                  <GoGoal
-                    size={25}
-                    color="white"
-                    style={{
-                      backgroundColor: "#3b82f6",
-                      borderRadius: "50px",
-                      padding: "5px",
-                    }}
-                  />
-                  <h1
-                    style={{
-                      fontWeight: "300",
-                      fontSize: "20px",
-                    }}
-                  >
-                    {analysis.questionsAttempted}
-                  </h1>
-                  <p>Questions Attempted</p>
-                </div>
-                <div className="box">
-                  <MdOutlinePercent
-                    size={25}
-                    color="white"
-                    style={{
-                      backgroundColor: "#22c55e",
-                      borderRadius: "50px",
-                      padding: "5px",
-                    }}
-                  />
-                  <h1
-                    style={{
-                      fontWeight: "300",
-                      fontSize: "20px",
-                    }}
-                  >
-                    {analysis.overallScore}%
-                  </h1>
-                  <p>Overall Score</p>
-                </div>
-              </div>
-              <div
-                style={{
-                  padding: "10px",
-                  height: "30vh",
-                  paddingTop: "-20px",
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "8px",
-                  color: "white",
-                }}
-              >
-                <div>
-                  <div style={{ width: "90vw", margin: "10px auto" }}>
-                    <div
-                      style={{
-                        height: "10px",
-                        backgroundColor: "#f1f5f9",
-                        borderRadius: "9999px",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div
-                        style={{
-                          height: "100%",
-                          width: `${analysis.overallScore}%`,
-                          backgroundColor: "#2881c1",
-                          transition: "width 0.3s ease-in-out",
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div>
-                    <p
-                      style={{
-                        textAlign: "center",
-                        paddingTop: "2px",
-                        color: "gray",
-                        fontWeight: "700",
-                      }}
-                    >
-                      {analysis.overallScore === 0
-                        ? ""
-                        : analysis.overallScore >= 90
-                        ? "🏆 Outstanding! You're crushing it. Your prep is on point — just maintain this consistency and you're interview-ready."
-                        : analysis.overallScore >= 75
-                        ? "🔥 Great job! You're doing really well. A little more practice and you’ll be in the top tier. Keep pushing!"
-                        : analysis.overallScore >= 60
-                        ? "💪 Good effort. You’ve got a strong foundation — refine your answers and you’ll see a big improvement."
-                        : analysis.overallScore >= 40
-                        ? "🔄 You're getting there. Some answers are solid, but there’s room to improve. Focus on clarity and accuracy."
-                        : analysis.overallScore >= 20
-                        ? "🧱 Not bad. You're starting to get the hang of it. Review the questions again and try to fill in the gaps."
-                        : "🌱 Everyone starts somewhere. Don’t be discouraged — use this as a baseline and build up from here. You’ve got this 💫"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  marginTop: "-100px",
-                }}
-              >
-                <button
-                  className="btn-export"
+                <div
                   style={{
-                    display: "flex",
-                    alignContent: "center",
-                    gap: "6px",
-                    
-                  }}
-                  onClick={() => {
-                    setanalysis((prev) => ({
-                      ...prev,
-                      averageScore: "",
-                      overallScore: "",
-                      questionsAttempted: "",
-                    }));
-                    setsection("Questions");
+                    width: "80vw",
+                    margin: "0px auto",
+                    border: "1px solid  #024059",
+                    padding: "30px",
+                    borderRadius: "30px",
                   }}
                 >
-                  <RiResetLeftFill size={18} color="white" /> Reset
-                </button>
+                  <h1
+                    style={{
+                      color: "white",
+                      fontSize: "24px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    AI Answer Analysis
+                  </h1>
+
+                  <h2
+                    style={{
+                      color: "#60a5fa",
+                      fontSize: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "inline-block",
+                        width: "10px",
+                        height: "10px",
+                        backgroundColor: "#60a5fa",
+                        borderRadius: "50%",
+                      }}
+                    ></span>
+                    Performance Metrics
+                  </h2>
+                  {[
+                    {
+                      label: "Average Score",
+                      value: analysis.averageScore,
+                    },
+                    {
+                      label: "Overall Score",
+                      value: analysis.overallScore,
+                    },
+                    {
+                      label: "Relevance",
+                      value: analysis.relevance,
+                    },
+                    {
+                      label: "Technical Depth",
+                      value: analysis.technicalDepth,
+                    },
+                    {
+                      label: "clarity & Communication",
+                      value: analysis.clarityCommunication,
+                    },
+                  ].map((metric, idx) => {
+                    const isPercent = !metric.isCount;
+                    const display = isPercent
+                      ? `${metric.value}%`
+                      : metric.value;
+                    const barWidth = isPercent ? `${metric.value}%` : "100%";
+
+                    return (
+                      <div key={idx} style={{ margin: "10px 0 30px" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            color: "white",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <span>{metric.label}</span>
+                          <span>{display}</span>
+                        </div>
+
+                        <div
+                          style={{
+                            height: "8px",
+                            background: "#1f2937",
+                            borderRadius: "8px",
+                            overflow: "hidden",
+                            marginTop: "4px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              height: "100%",
+                              width: barWidth,
+                              backgroundColor: "#3b82f6",
+                              transition: "width 0.3s ease-in-out",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </>
           ) : (
@@ -498,27 +474,44 @@ export default function Index() {
       {section === "Questions" ? (
         <div className="questions">
           {jobData.questions.length > 0 ? (
-            jobData.questions.map((q, id) => (
+            jobData.questions.slice(1).map((q, id) => (
               <>
                 <div className="q-box" key={id}>
                   <div className="q-box-inner">
-                    <h1 className="q-heading">{q}</h1>
+                    <div className="q-inner-box">
+                      <h1 className="q-heading">
+                        {q.replace(/^\[[^\]]+\]\s*/, "")}{" "}
+                      </h1>
+                      {(() => {
+                        const tag = q.match(/^\[([^\]]+)\]/)?.[1] ?? "",
+                          variant = tag.toLowerCase().startsWith("tech")
+                            ? "tech"
+                            : tag.startsWith("Beh")
+                            ? "beh"
+                            : tag.startsWith("Lead")
+                            ? "lead"
+                            : "";
+                        return <p className={`q-tag ${variant}`}>{tag}</p>;
+                      })()}{" "}
+                    </div>
                     <div className="arrow-icon">
-                      {id !== 0 &&
+                      {id + 1 !== 0 &&
                         (id === openQuestionIndex ? (
-                          <RiArrowDropUpLine
-                            size={30}
-                            color="#ffffff"
-                            cursor="pointer"
+                          <button
+                            className="practice-btn"
                             onClick={() => setopenQuestionIndex(null)}
-                          />
+                          >
+                            <IoPauseOutline size={20} color="black" />
+                            <p>Close</p>
+                          </button>
                         ) : (
-                          <RiArrowDropDownLine
-                            size={30}
-                            color="#ffffff"
-                            cursor="pointer"
+                          <button
+                            className="practice-btn"
                             onClick={() => setopenQuestionIndex(id)}
-                          />
+                          >
+                            <CiPlay1 size={20} color="black" />
+                            <p>Practice</p>
+                          </button>
                         ))}
                     </div>
                   </div>
