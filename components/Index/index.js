@@ -175,6 +175,16 @@ export default function Index() {
     }
   };
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (jobData.jobDescription && jobData.jobTitle) {
+        getInterviewQuestions(jobData.jobDescription, jobData.jobTitle);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [jobData.jobDescription]);
+
   return (
     <div>
       <div className="header-top">
