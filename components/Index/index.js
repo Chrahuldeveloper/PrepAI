@@ -231,7 +231,6 @@ export default function Index() {
           }
           className="popup-textarea"
           placeholder="Paste job description here..."
-          disabled={!!jobData.jobDescription}
           rows={8}
         />
       )}
@@ -261,8 +260,8 @@ export default function Index() {
                       justifyContent: "space-between",
                       gap: "15px",
                       border: "1px solid #024059",
-                      padding:"15px",
-                      borderRadius:"25px"
+                      padding: "15px",
+                      borderRadius: "25px",
                     }}
                   >
                     <div
