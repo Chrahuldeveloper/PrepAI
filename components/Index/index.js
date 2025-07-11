@@ -36,7 +36,6 @@ export default function Index() {
   });
 
   const [answers, setanswers] = useState({});
-
   const getInterviewQuestions = async (data, title) => {
     try {
       setisloading(true);
