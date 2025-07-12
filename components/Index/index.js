@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { LuLoaderCircle } from "react-icons/lu";
 import Image from "next/image";
 import { FiTrash } from "react-icons/fi";
-import { RiTimerLine } from "react-icons/ri";
 import { CiPlay1 } from "react-icons/ci";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdDescription, MdQuestionAnswer, MdScore } from "react-icons/md";
@@ -25,7 +24,6 @@ export default function Index() {
 
   const [openQuestionIndex, setopenQuestionIndex] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [analysis, setanalysis] = useState({
     questionsAttempted: 0,
     averageScore: 0,
@@ -80,37 +78,35 @@ export default function Index() {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && chrome?.storage) {
-      chrome.storage.local.get("scrapedData", (data) => {
-        if (data.scrapedData) {
-          const { desc, title, hostname, questions, link } = data.scrapedData;
-          setjobData((prev) => ({
-            ...prev,
-            jobTitle: title,
-            jobDescription: desc,
-            hostname: hostname,
-            questions: questions || [],
-            link: link,
-          }));
-
-          if (!questions || questions.length === 0) {
-            getInterviewQuestions(desc, title);
-          } else {
-            setsection("Questions");
-          }
+  const getAnalysis = async (data) => {
+    try {
+      console.log(data);
+      const res = await fetch(
+        "https://analysis-ai.chrahulofficial.workers.dev",
+        {
+          method: "POST",
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ questions: data }),
         }
-      });
+      );
+      const aidata = await res.json();
+      setanalysis((prev) => ({
+        ...prev,
+        averageScore: aidata.averageScore,
+        overallScore: aidata.overallScore,
+        questionsAttempted: aidata.questionsAttempted,
+        relevance: aidata.relevance,
+        technicalDepth: aidata.technicalDepth,
+        clarityCommunication: aidata.clarityCommunication,
+      }));
+      setsection("Score");
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && chrome?.storage) {
-      chrome.storage.local.get("jobApplications", (data) => {
-        setjobapplications(data.jobApplications || []);
-      });
-    }
-  }, []);
+  };
 
   const handleSaveJob = () => {
     if (typeof window !== "undefined" && chrome?.storage) {
@@ -144,35 +140,37 @@ export default function Index() {
     });
   };
 
-  const getAnalysis = async (data) => {
-    try {
-      console.log(data);
-      const res = await fetch(
-        "https://analysis-ai.chrahulofficial.workers.dev",
-        {
-          method: "POST",
-          headers: {
-            Accept: "*/*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ questions: data }),
+  useEffect(() => {
+    if (typeof window !== "undefined" && chrome?.storage) {
+      chrome.storage.local.get("scrapedData", (data) => {
+        if (data.scrapedData) {
+          const { desc, title, hostname, questions, link } = data.scrapedData;
+          setjobData((prev) => ({
+            ...prev,
+            jobTitle: title,
+            jobDescription: desc,
+            hostname: hostname,
+            questions: questions || [],
+            link: link,
+          }));
+
+          if (!questions || questions.length === 0) {
+            getInterviewQuestions(desc, title);
+          } else {
+            setsection("Questions");
+          }
         }
-      );
-      const aidata = await res.json();
-      setanalysis((prev) => ({
-        ...prev,
-        averageScore: aidata.averageScore,
-        overallScore: aidata.overallScore,
-        questionsAttempted: aidata.questionsAttempted,
-        relevance: aidata.relevance,
-        technicalDepth: aidata.technicalDepth,
-        clarityCommunication: aidata.clarityCommunication,
-      }));
-      setsection("Score");
-    } catch (error) {
-      console.log(error);
+      });
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && chrome?.storage) {
+      chrome.storage.local.get("jobApplications", (data) => {
+        setjobapplications(data.jobApplications || []);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -183,6 +181,34 @@ export default function Index() {
 
     return () => clearTimeout(timeout);
   }, [jobData.jobDescription]);
+
+  useEffect(() => {
+    let lasturl = window.location.href;
+
+    const interval = setInterval(() => {
+      if (lasturl != window.location.href) {
+        setjobData((prev) => {
+          return {
+            ...prev,
+            questions: [],
+          };
+        });
+      }
+
+      chrome.storage.local.get("scrapedData", (data) => {
+        if (data.scrapedData) {
+          const updated = {
+            ...data.scrapedData,
+            questions: [],
+          };
+          chrome.storage.local.set({ scrapedData: updated });
+        }
+      });
+
+      console.log("URL changed. Questions cleared.");
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div>
@@ -232,12 +258,14 @@ export default function Index() {
       {section === "Job description" && (
         <textarea
           value={jobData.jobDescription}
-          onChange={(e) =>
+          onChange={(e) => {
+            const updatedDesc = e.target.value;
             setjobData((prev) => ({
               ...prev,
-              jobDescription: e.target.value,
-            }))
-          }
+              jobDescription: updatedDesc,
+            }));
+            getInterviewQuestions(updatedDesc, jobData.jobTitle);
+          }}
           className="popup-textarea"
           placeholder="Paste job description here..."
           rows={8}

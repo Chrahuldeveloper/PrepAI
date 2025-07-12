@@ -47,7 +47,6 @@ function scrapeNaukri() {
 }
 chrome.storage.local.get("scrapedData", (data) => {
   const currentUrl = window.location.href;
-
   if (!data.scrapedData || data.scrapedData.link !== currentUrl) {
     console.log("No scraped data found for this URL, starting scraping...");
     scrapeInterval(scrapeInternshalaJob);
@@ -58,3 +57,15 @@ chrome.storage.local.get("scrapedData", (data) => {
     console.log("Scraped data already exists for this URL. Skipping scraping.");
   }
 });
+
+function clearData() {
+  let lastUrl = window.location.href;
+  setInterval(() => {
+    if (location.href != lastUrl) {
+      lastUrl = window.location.href;
+      chrome.storage.local.remove("scrapedData", () => {
+        console.log("scrapedData cleared due to URL change");
+      });
+    }
+  }, 1000);
+}
