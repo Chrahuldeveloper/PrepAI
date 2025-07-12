@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "InterviewPrepAI",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Track job applications, practice real interview questions, and get AI feedback ",
   "icons": {
     "16": "/icons/icon16.png",
