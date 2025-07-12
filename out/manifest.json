@@ -22,7 +22,6 @@
     }
   ],
   "host_permissions": [
-    "<all_urls>",
     "https://internshala.com/internship/detail/*",
     "https://wellfound.com/jobs/*"
   ],
