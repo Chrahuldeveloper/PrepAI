@@ -12,3 +12,15 @@
 - 📥 Chrome Extension support (coming soon)
 
 
+## ⚙️ Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/Chrahuldeveloper/InterviewPrepAI.git
+cd InterviewPrepAI
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
